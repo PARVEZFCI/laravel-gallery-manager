@@ -145,7 +145,7 @@ In your route file (e.g., `routes/web.php`):
 
 ```php
 use Inertia\Inertia;
-use YourName\GalleryManager\Controllers\GalleryController;
+use Parvez\GalleryManager\Controllers\GalleryController;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');

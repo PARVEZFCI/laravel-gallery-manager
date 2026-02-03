@@ -1,0 +1,20 @@
+/* Gallery Manager default styles */
+.gallery-manager {
+    --gallery-gap: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--gallery-gap);
+}
+
+.gallery-manager img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.gallery-manager .caption {
+    font-size: 0.875rem;
+    color: #555;
+}

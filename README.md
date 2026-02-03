@@ -18,7 +18,7 @@ A comprehensive Laravel package for managing images with date-wise and user-wise
 ## Requirements
 
 - PHP 8.0 or higher
-- Laravel 9.x, 10.x or 11.x
+- Laravel 9.x, 10.x, 11.x or 12.x
 - Vue 3
 - Inertia.js
 - Intervention Image 3.x

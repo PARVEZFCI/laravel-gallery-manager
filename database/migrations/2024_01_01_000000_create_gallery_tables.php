@@ -8,63 +8,61 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('gallery_images', function (Blueprint $table) {
+        // Create folders table first (referenced by media table)
+        Schema::create('folders', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 255);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->string('filename');
-            $table->string('original_filename');
-            $table->string('mime_type');
-            $table->unsignedBigInteger('size'); // bytes
-            $table->string('disk')->default('public');
-            $table->string('path');
-            $table->string('thumbnail_path')->nullable();
-            $table->string('medium_path')->nullable();
-            $table->json('metadata')->nullable(); // width, height, etc.
-            $table->string('folder_date'); // Y-m-d format
-            $table->boolean('is_public')->default(true);
-            $table->timestamp('uploaded_at');
+            $table->foreignId('parent_id')->nullable()->constrained('folders')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
-
-            // Indexes
-            $table->index('user_id');
-            $table->index('folder_date');
-            $table->index('created_at');
         });
 
-        Schema::create('gallery_folders', function (Blueprint $table) {
+        // Create media table
+        Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('folder_path')->unique();
-            $table->string('folder_date');
-            $table->unsignedInteger('image_count')->default(0);
-            $table->unsignedBigInteger('total_size')->default(0);
+            
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('original')->nullable();
+            $table->string('name')->nullable();
+            $table->enum('type', ['image', 'video', 'document', 'audio', 'other'])->default('image');
+            $table->string('path')->nullable();
+            $table->foreignId('folder_id')->nullable()->constrained('folders')->onDelete('set null');
+            $table->string('url')->nullable();
+            $table->string('mime_type')->nullable();
+            $table->string('extension')->nullable();
+            $table->unsignedBigInteger('size')->default(0);
+            $table->unsignedBigInteger('width')->default(0);
+            $table->unsignedBigInteger('height')->default(0);
+            $table->unsignedBigInteger('duration')->default(0);
+            $table->softDeletes();
             $table->timestamps();
 
-            $table->index(['user_id', 'folder_date']);
+            // Index
+            $table->index(['original', 'type', 'path', 'url']);
         });
 
-        Schema::create('gallery_tags', function (Blueprint $table) {
+        // Create tags table
+        Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->timestamps();
         });
 
-        Schema::create('gallery_image_tag', function (Blueprint $table) {
-            $table->foreignId('gallery_image_id')->constrained('gallery_images')->onDelete('cascade');
-            $table->foreignId('gallery_tag_id')->constrained('gallery_tags')->onDelete('cascade');
-            $table->primary(['gallery_image_id', 'gallery_tag_id']);
+        // Create media_tag pivot table
+        Schema::create('media_tag', function (Blueprint $table) {
+            $table->foreignId('media_id')->constrained('media')->onDelete('cascade');
+            $table->foreignId('tag_id')->constrained('tags')->onDelete('cascade');
+            $table->primary(['media_id', 'tag_id']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('gallery_image_tag');
-        Schema::dropIfExists('gallery_tags');
-        Schema::dropIfExists('gallery_folders');
-        Schema::dropIfExists('gallery_images');
+        Schema::dropIfExists('media_tag');
+        Schema::dropIfExists('tags');
+        Schema::dropIfExists('media');
+        Schema::dropIfExists('folders');
     }
 };

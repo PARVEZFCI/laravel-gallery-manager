@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
-class GalleryTag extends Model
+class Tag extends Model
 {
     protected $fillable = [
         'name',
@@ -24,8 +24,8 @@ class GalleryTag extends Model
         });
     }
 
-    public function images(): BelongsToMany
+    public function media(): BelongsToMany
     {
-        return $this->belongsToMany(GalleryImage::class, 'gallery_image_tag');
+        return $this->belongsToMany(Media::class, 'media_tag');
     }
 }

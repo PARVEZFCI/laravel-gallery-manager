@@ -1,8 +1,9 @@
 {
     "name": "parvez/laravel-gallery-manager",
-    "description": "A comprehensive Laravel package for managing images with date-wise and user-wise organization, supporting both local and AWS S3 storage",
+    "description": "A comprehensive Laravel package for managing media files (images, videos, documents, audio) with hierarchical folder structure, supporting both local and AWS S3 storage",
     "type": "library",
     "license": "MIT",
+    "keywords": ["laravel", "media", "gallery", "file-manager", "upload", "storage", "s3"],
     "authors": [
         {
             "name": "Parvez Rahman",
@@ -10,8 +11,8 @@
         }
     ],
     "require": {
-        "php": "^8.0|^8.1|^8.2|^8.3",
-        "illuminate/support": "^9.0|^10.0|^11.0|^12.0",
+        "php": "^8.1|^8.2|^8.3",
+        "illuminate/support": "^10.0|^11.0|^12.0",
         "intervention/image": "^3.0"
     },
     "require-dev": {

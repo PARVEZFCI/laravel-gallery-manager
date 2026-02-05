@@ -16,53 +16,51 @@ return [
     | Storage Path
     |--------------------------------------------------------------------------
     |
-    | Base path for storing gallery images
+    | Base path for storing media files
     |
     */
-    'storage_path' => env('GALLERY_STORAGE_PATH', 'gallery'),
+    'storage_path' => env('GALLERY_STORAGE_PATH', 'media'),
 
     /*
     |--------------------------------------------------------------------------
-    | Date Format for Folders
+    | File Upload Configuration
     |--------------------------------------------------------------------------
-    |
-    | Format: Y-m-d, Y/m/d, Y-m, etc.
-    |
     */
-    'date_format' => env('GALLERY_DATE_FORMAT', 'Y/m/d'),
+    'max_size' => env('GALLERY_MAX_SIZE', 10240), // KB (10MB default)
+    
+    'allowed_mimes' => [
+        // Images
+        'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico',
+        
+        // Videos
+        'mp4', 'avi', 'mov', 'wmv', 'flv', 'mkv', 'webm',
+        
+        // Documents
+        'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'csv',
+        
+        // Audio
+        'mp3', 'wav', 'ogg', 'flac', 'aac', 'm4a',
+    ],
 
     /*
     |--------------------------------------------------------------------------
-    | Organization Structure
-    |--------------------------------------------------------------------------
-    |
-    | Options: 'user-date', 'date-user'
-    | user-date: gallery/users/{user_id}/{date}/
-    | date-user: gallery/{date}/users/{user_id}/
-    |
-    */
-    'organization' => env('GALLERY_ORGANIZATION', 'user-date'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Image Processing
+    | Image Processing (requires intervention/image)
     |--------------------------------------------------------------------------
     */
     'image' => [
-        'max_size' => env('GALLERY_MAX_SIZE', 5120), // KB
-        'allowed_extensions' => ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'],
+        'enabled' => true,
         'quality' => env('GALLERY_IMAGE_QUALITY', 90),
         
         // Thumbnail settings
         'thumbnail' => [
-            'enabled' => true,
+            'enabled' => false,
             'width' => 300,
             'height' => 300,
         ],
         
         // Medium size
         'medium' => [
-            'enabled' => true,
+            'enabled' => false,
             'width' => 800,
             'height' => 800,
         ],

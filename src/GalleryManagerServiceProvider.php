@@ -4,7 +4,7 @@ namespace Parvez\GalleryManager;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Parvez\GalleryManager\Services\GalleryService;
+use Parvez\GalleryManager\Services\MediaService;
 
 class GalleryManagerServiceProvider extends ServiceProvider
 {
@@ -14,9 +14,12 @@ class GalleryManagerServiceProvider extends ServiceProvider
             __DIR__.'/../config/gallery-manager.php', 'gallery-manager'
         );
 
-        $this->app->singleton('gallery', function ($app) {
-            return new GalleryService();
+        $this->app->singleton('gallery-manager', function ($app) {
+            return new MediaService();
         });
+        
+        // Alias for backward compatibility
+        $this->app->alias('gallery-manager', 'gallery');
     }
 
     public function boot()
@@ -47,7 +50,9 @@ class GalleryManagerServiceProvider extends ServiceProvider
         // Load routes
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
 
-        // Register views
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'gallery-manager');
+        // Register views (if needed)
+        if (is_dir(__DIR__.'/../resources/views')) {
+            $this->loadViewsFrom(__DIR__.'/../resources/views', 'gallery-manager');
+        }
     }
 }
